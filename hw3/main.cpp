@@ -27,7 +27,7 @@ pthread_mutex_t mutex;
 pthread_cond_t cond[5];
 semaphore situation[N]={0};
 pthread_t th[5];
-void* philosopher(void *number);
+//void* philosopher(void* number);
 void close_thread();
  
 class monitor{
@@ -69,10 +69,10 @@ class monitor{
 	} 
 };
 monitor m;
-void* philosopher(void *number)	
+void* philosopher(void* number)	
 {	
  	pthread_detach(pthread_self());
-	int i=(int)number;
+	int i=*(int*)number;
 	while(TRUE)
 	{
 		m.think();
@@ -98,11 +98,17 @@ int main()
        
         int i;
         signal(SIGINT,close_thread);
+        int *phil_index[N];
+        for ( int i = 0; i < N; i++ )
+        {
+          phil_index[i] = ( int * )malloc( sizeof( int ) );
+          *phil_index[i] = i;
+        }
         for(i=0;i<5;i++)
         {
               pthread_cond_init(&cond[i],NULL);
               cout<<"Creating "<<i<<"thread"<<endl;
-              pthread_create(&th[i],NULL,philosopher,(void*)i);
+              pthread_create(&th[i],NULL,philosopher,(void*)phil_index[i]);
         }
 
         while(1)

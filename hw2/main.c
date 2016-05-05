@@ -10,7 +10,7 @@
 #define THINKING 0
 #define HUNGRY 1
 #define EATING 2
-#define TRUE 1
+#define TRUE 1//command
 void* philosopher(void *number);
 void take_forks(int i);
 void put_forks(int i);
@@ -23,15 +23,7 @@ typedef int semaphore;
 int state[N]={THINKING};
 pthread_mutex_t mutex;
 semaphore situation[N]={0};
-pthread_t th[5];
-void small_sleep(int a)
-{
-	time_t t1,t2;
-	t1=time(NULL);
-	t2=time(NULL);
-	while((t2-t1)*10000<a)
-	t2=time(NULL);	
-}	
+pthread_t th[5];	
 void* philosopher(void *number)
 {
   pthread_detach(pthread_self());
